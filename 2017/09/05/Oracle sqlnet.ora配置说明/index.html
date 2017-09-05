@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="database,oracle,sqlnet," />
 
 
 
@@ -94,17 +94,18 @@
 
 
 
-<meta name="description" content="博客的说明这里记录我的工作与学习 主要内容是数据库及AI 当然还有诗和远方">
+<meta name="description" content="这里只列出了该文件的说明，待到有实际案例时再补充 sqlnet.ora的作用 限制客户端访问（如指定客户端域为不允许访问） 指定命名方法（local naming,directory nameing…）的优先级 启用日志及跟踪（log and trace）功能 通过特定进程来路由客户端连接 配置外部命名（第三方连接程序，如c语言写的）参数 配置Oracle的高级安全 使用协议特定的参数限制对数据库">
+<meta name="keywords" content="database,oracle,sqlnet">
 <meta property="og:type" content="article">
-<meta property="og:title" content="readme">
-<meta property="og:url" content="http://yoursite.com/2017/08/22/readme/index.html">
+<meta property="og:title" content="Oracle 的 sqlnet.ora 文件配置说明">
+<meta property="og:url" content="http://yoursite.com/2017/09/05/Oracle sqlnet.ora配置说明/index.html">
 <meta property="og:site_name" content="禾田农本">
-<meta property="og:description" content="博客的说明这里记录我的工作与学习 主要内容是数据库及AI 当然还有诗和远方">
+<meta property="og:description" content="这里只列出了该文件的说明，待到有实际案例时再补充 sqlnet.ora的作用 限制客户端访问（如指定客户端域为不允许访问） 指定命名方法（local naming,directory nameing…）的优先级 启用日志及跟踪（log and trace）功能 通过特定进程来路由客户端连接 配置外部命名（第三方连接程序，如c语言写的）参数 配置Oracle的高级安全 使用协议特定的参数限制对数据库">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-08-22T08:23:21.391Z">
+<meta property="og:updated_time" content="2017-09-05T02:02:24.583Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="readme">
-<meta name="twitter:description" content="博客的说明这里记录我的工作与学习 主要内容是数据库及AI 当然还有诗和远方">
+<meta name="twitter:title" content="Oracle 的 sqlnet.ora 文件配置说明">
+<meta name="twitter:description" content="这里只列出了该文件的说明，待到有实际案例时再补充 sqlnet.ora的作用 限制客户端访问（如指定客户端域为不允许访问） 指定命名方法（local naming,directory nameing…）的优先级 启用日志及跟踪（log and trace）功能 通过特定进程来路由客户端连接 配置外部命名（第三方连接程序，如c语言写的）参数 配置Oracle的高级安全 使用协议特定的参数限制对数据库">
 
 
 
@@ -134,13 +135,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/08/22/readme/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/09/05/Oracle sqlnet.ora配置说明/"/>
 
 
 
 
 
-  <title>readme | 禾田农本</title>
+  <title>Oracle 的 sqlnet.ora 文件配置说明 | 禾田农本</title>
   
 
 
@@ -257,7 +258,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/22/readme/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/05/Oracle sqlnet.ora配置说明/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="harrile">
@@ -274,7 +275,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">readme</h1>
+          <h1 class="post-title" itemprop="name headline">Oracle 的 sqlnet.ora 文件配置说明</h1>
         
 
         <div class="post-meta">
@@ -286,8 +287,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-22T16:19:16+08:00">
-                2017-08-22
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-05T09:19:16+08:00">
+                2017-09-05
               </time>
             
 
@@ -324,10 +325,51 @@
       
 
       
-        <h2 id="博客的说明"><a href="#博客的说明" class="headerlink" title="博客的说明"></a>博客的说明</h2><p>这里记录我的工作与学习</p>
-<p>主要内容是数据库及AI</p>
-<p>当然还有诗和远方</p>
-
+        <p>这里只列出了该文件的说明，待到有实际案例时再补充</p>
+<h2 id="sqlnet-ora的作用"><a href="#sqlnet-ora的作用" class="headerlink" title="sqlnet.ora的作用"></a>sqlnet.ora的作用</h2><ol>
+<li>限制客户端访问（如指定客户端域为不允许访问）</li>
+<li>指定命名方法（local naming,directory nameing…）的优先级</li>
+<li>启用日志及跟踪（log and trace）功能</li>
+<li>通过特定进程来路由客户端连接</li>
+<li>配置外部命名（第三方连接程序，如c语言写的）参数</li>
+<li>配置<code>Oracle</code>的高级安全</li>
+<li>使用协议特定的参数限制对数据库的访问</li>
+</ol>
+<p><code>sqlnet.ora</code>配置文件的存放位置一般在：<code>$ORACLE_HOME/network/admin</code>目录下</p>
+<h2 id="常用参数设置"><a href="#常用参数设置" class="headerlink" title="常用参数设置"></a>常用参数设置</h2><p><strong>1.设置<code>windows</code>下允许使用<code>windows nt</code>本地认证</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SQLNET.AUTHENTICATION_SERVICES=(nts)</div></pre></td></tr></table></figure>
+<p><strong>2.设置<code>Oracle</code>客户端连接串命名查找顺序</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">NAMES.DIRECTORY_PATH=(tnsnames, onames,ezconnect)</div></pre></td></tr></table></figure>
+<p>允许的值有：</p>
+<ol>
+<li><code>tnsnames</code>使用客户端的<code>tnsnames.ora</code>解析</li>
+<li><code>ldap</code>使用目录访问协议解析，需要有目录服务</li>
+<li><code>ezconnect</code> or <code>hostname</code>，允许使用<code>tcp/ip</code>连接串，包含主机名，端口，服务名</li>
+<li><code>cds</code>分布式环境的数据库名</li>
+<li><code>nis (Network Information Service (NIS) external naming method)</code>，主要用于外部程序解析</li>
+<li><code>onames</code>:通过<code>Oracle Name Server</code>解析</li>
+</ol>
+<p><strong>3.设置客户端连接会话超时时间（单位分钟）</strong></p>
+<p>定期检测客户端是否还是活动的，设置为 0 不检测</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SQLNET.EXPIRE_TIME = 10</div></pre></td></tr></table></figure>
+<p>另外还有：</p>
+<p>客户端建立连接超时时间（单位秒，默认60）</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SQLNET.INBOUND_CONNECT_TIMEOUT=10</div></pre></td></tr></table></figure>
+<p><code>Oracle</code>建议在<code>listener.ora</code>中也进行配置</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 接受超时时间（单位秒）</span></div><div class="line">SQLNET.RECV_TIMEOUT=3</div><div class="line"></div><div class="line"><span class="comment"># 发送超时时间（单位秒）</span></div><div class="line">SQLNET.SEND_TIMEOUT=3</div></pre></td></tr></table></figure>
+<p><strong>4.客户端限制</strong></p>
+<p>是否进行限制（默认<code>no</code>）：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">TCP.VALIDNODE_CHECKING=yes</div></pre></td></tr></table></figure>
+<p>限制客户端访问</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># TCP.EXCLUDED_NODES=(hostname | ip_address, hostname | ip_address, ...)</span></div><div class="line">TCP.EXCLUDED_NODES=(finance.us.acme.com, mktg.us.acme.com, 144.25.5.25)</div></pre></td></tr></table></figure>
+<p>允许客户端访问，会覆盖限制访问</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># TCP.INVITED_NODES=(hostname | ip_address, hostname | ip_address, ...)</span></div><div class="line">TCP.INVITED_NODES=(sales.us.acme.com, hr.us.acme.com, 144.185.5.73)</div></pre></td></tr></table></figure>
+<p><strong>5.设置立即发送</strong></p>
+<p>设置等待一段时间或者数据包凑够多大才会一起发送，或者可以让数据立即发送</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">TCP.NODELAY=yes</div></pre></td></tr></table></figure>
+<p><strong>6.设置使用专享连接还是公用链接</strong></p>
+<p>设置为<code>on</code>会在客户端连接串后加上（<code>SERVER=dedicated</code>）</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attr">USE_DEDICATED_SERVER</span>=<span class="literal">on</span>/<span class="literal">off</span></div></pre></td></tr></table></figure>
       
     </div>
     
@@ -342,6 +384,16 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/database/" rel="tag"># database</a>
+          
+            <a href="/tags/oracle/" rel="tag"># oracle</a>
+          
+            <a href="/tags/sqlnet/" rel="tag"># sqlnet</a>
+          
+        </div>
+      
 
       
       
@@ -351,15 +403,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2017/09/04/学习SED/" rel="next" title="学习SED">
+                <i class="fa fa-chevron-left"></i> 学习SED
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/08/24/hello-world/" rel="prev" title="Hello World">
-                Hello World <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -499,7 +551,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#博客的说明"><span class="nav-number">1.</span> <span class="nav-text">博客的说明</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#sqlnet-ora的作用"><span class="nav-number">1.</span> <span class="nav-text">sqlnet.ora的作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用参数设置"><span class="nav-number">2.</span> <span class="nav-text">常用参数设置</span></a></li></ol></div>
             
 
           </div>
