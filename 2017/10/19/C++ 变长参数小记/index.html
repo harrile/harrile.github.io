@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="c/c++," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="因为要封装一个接受变长参数的函数，使得这些参数进行传递，因此要理解变长参数到底是什么结构，以及怎么存储的。 变长参数的函数，最常见的例子是 printf 函数、 scanf 函数和高级语言的 Format 函数。在 C/C++ 中，为了通知编译器函数的参数个数和类型可变(即是不定的、未知的)，就必须以三个点结束该函数的声明。例如： 12345678//printf函数的声明  int printf">
+<meta name="keywords" content="c&#x2F;c++">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++ 变长参数小记">
+<meta property="og:url" content="http://yoursite.com/2017/10/19/C++ 变长参数小记/index.html">
+<meta property="og:site_name" content="荷田农本">
+<meta property="og:description" content="因为要封装一个接受变长参数的函数，使得这些参数进行传递，因此要理解变长参数到底是什么结构，以及怎么存储的。 变长参数的函数，最常见的例子是 printf 函数、 scanf 函数和高级语言的 Format 函数。在 C/C++ 中，为了通知编译器函数的参数个数和类型可变(即是不定的、未知的)，就必须以三个点结束该函数的声明。例如： 12345678//printf函数的声明  int printf">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-10-20T08:47:21.662Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C++ 变长参数小记">
+<meta name="twitter:description" content="因为要封装一个接受变长参数的函数，使得这些参数进行传递，因此要理解变长参数到底是什么结构，以及怎么存储的。 变长参数的函数，最常见的例子是 printf 函数、 scanf 函数和高级语言的 Format 函数。在 C/C++ 中，为了通知编译器函数的参数个数和类型可变(即是不定的、未知的)，就必须以三个点结束该函数的声明。例如： 12345678//printf函数的声明  int printf">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/10/19/C++ 变长参数小记/"/>
+
+
+
+
+
+  <title>C++ 变长参数小记 | 荷田农本</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">荷田农本</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/19/C++ 变长参数小记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="harrile">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/harrile.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="荷田农本">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">C++ 变长参数小记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-19T16:11:00+08:00">
+                2017-10-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>因为要封装一个接受变长参数的函数，使得这些参数进行传递，因此要理解变长参数到底是什么结构，以及怎么存储的。</p>
+<p>变长参数的函数，最常见的例子是 printf 函数、 scanf 函数和高级语言的 Format 函数。在 C/C++ 中，为了通知编译器函数的参数个数和类型可变(即是不定的、未知的)，就必须以三个点结束该函数的声明。例如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//printf函数的声明  </span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">printf</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> * _Format, ...)</span></span>;  </div><div class="line"></div><div class="line"><span class="comment">//scanf函数声明  </span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">scanf</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> * _Format, ...)</span></span>;  </div><div class="line"></div><div class="line"><span class="comment">//自定义变长参数函数func的声明  </span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b, ...)</span></span>;</div></pre></td></tr></table></figure>
+<p>上面func函数的声明指出该函数至少有两个整型参数和紧随其后的0个或多个类型未知的参数。在C/C++中，任何使用变长参数声明的函数都必须至少有一个指定的参数(又称强制参数)，即至少有一个参数的类型是已知的，而不能用三个点省略所有参数的指定，且已知的指定参数必须声明在函数最左端。</p>
+<h2 id="变长参数函数的实现"><a href="#变长参数函数的实现" class="headerlink" title="变长参数函数的实现"></a>变长参数函数的实现</h2><p>含有变长参数的函数是怎么实现的呢？变长参数函数的实现其实关键在于怎么使用参数，指定了的参数好说，直接使用指定的参数名称访问，但未指定的参数呢？</p>
+<p>我们知道函数调用过程中参数传递是通过栈来实现的，一般调用都是从右至左的顺序压参数入栈，因此参数与参数之间是相邻的，知道前一个参数的类型及地址，根据后一个参数的类型就可以获取后一个参数的内容。</p>
+<p>对于变长参数函数，结合一定的条件，我们可以根据最后一个指定参数获取之后的省略参数内容。如，对于函数 func ，我们知道了参数 b 的地址及类型，就可知道第一个可变参数的栈地址（如果有的话），如果知道第一个可变参数的类型，就可知道第一个可变参数的内容和第二个可变参数的地址（如果有的话）。以此类推，可以实现对可变参数函数的所有参数的访问。</p>
+<p>那么，要怎么指定上诉的“一定的条件”呢？最简单的方法就像printf等函数一样，使用格式化占位符。分析格式化字符串参数，通过事先定义好的格式化占位符可知可变参数的类型及个数，从而获取各个参数内容。一般对于可变参数类型相同的函数也可直接在强制参数中指定可变参数的个数和类型，这样也能获取各个参数的内容。</p>
+<p>无论哪种，都涉及对栈地址偏移的操作。结合栈存储模式和系统数据类型的字长，我们可根据可变参数的类型很容易得到栈地址的偏移量。</p>
+<p>变长参数函数的简单运用：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// va_arg_test.cpp : 定义控制台应用程序的入口点。  </span></div><div class="line"><span class="comment">//  </span></div><div class="line"><span class="comment">//访问可变参数流程  </span></div><div class="line"><span class="comment">//va_list args;         //定义一个可变参数列表  </span></div><div class="line"><span class="comment">//va_start(args,arg);   //初始化args指向强制参数arg的下一个参数  </span></div><div class="line"><span class="comment">//va_arg(args,type);    //获取当前参数内容并将args指向下一个参数  </span></div><div class="line"><span class="comment">//...                   //循环获取所有可变参数内容  </span></div><div class="line"><span class="comment">//va_end(args);         //释放args  </span></div><div class="line">  </div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdafx.h"</span>  </span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdarg.h&gt;  </span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;  </span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;  </span></span></div><div class="line">  </div><div class="line"><span class="comment">/// @brief      利用变长参数函数进行求和运算  </span></div><div class="line"><span class="comment">/// @param[in]  n : 指定后面有多少可变参数  </span></div><div class="line"><span class="comment">/// @remark     第一个参数为强制参数  </span></div><div class="line"><span class="comment">/// @return     得到求和结果  </span></div><div class="line"><span class="function"><span class="keyword">double</span> <span class="title">sum</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">int</span> n, ...)</span>  </span></div><div class="line"><span class="function"></span>&#123;  </div><div class="line">    <span class="keyword">double</span> sum = <span class="number">0</span>;  </div><div class="line">    va_list args = <span class="literal">NULL</span>;<span class="comment">//定义一个可变参数列表  </span></div><div class="line">    va_start(args, n);<span class="comment">//初始化args指向强制参数arg的下一个参数  </span></div><div class="line">    <span class="keyword">while</span>(n &gt; <span class="number">0</span>)  </div><div class="line">    &#123;  </div><div class="line">        <span class="comment">//通过va_arg(args, double)依次获取参数的值  </span></div><div class="line">        sum += va_arg(args, <span class="keyword">double</span>);  </div><div class="line">        n--;  </div><div class="line">    &#125;  </div><div class="line">    va_end(args);<span class="comment">//释放args  </span></div><div class="line">    <span class="keyword">return</span> sum;  </div><div class="line">&#125;  </div><div class="line">  </div><div class="line"><span class="comment">/// @brief      利用变长参数函数格式化字符串  </span></div><div class="line"><span class="comment">/// @param[in]  format : 类似printf中第一个参数  </span></div><div class="line"><span class="comment">/// @remark       </span></div><div class="line"><span class="comment">/// @return     格式化后的字符串  </span></div><div class="line"><span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">format</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span>* format, ...)</span>  </span></div><div class="line"><span class="function"></span>&#123;  </div><div class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> var_str;  </div><div class="line">  </div><div class="line">    va_list ap;  </div><div class="line">    va_start(ap, format);  </div><div class="line">    <span class="keyword">int</span> len = _vscprintf(format, ap);  </div><div class="line">    <span class="keyword">if</span> (len &gt; <span class="number">0</span>)  </div><div class="line">    &#123;  </div><div class="line">        <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">char</span>&gt; buf(len + <span class="number">1</span>);  </div><div class="line">        <span class="built_in">vsprintf</span>(&amp;buf.front(), format, ap);  </div><div class="line">        var_str.assign(buf.begin(), buf.end() - <span class="number">1</span>);  </div><div class="line">    &#125;  </div><div class="line">    va_end(ap);  </div><div class="line">  </div><div class="line">    <span class="keyword">return</span> var_str;  </div><div class="line">&#125;  </div><div class="line">  </div><div class="line"><span class="comment">//  </span></div><div class="line"><span class="keyword">int</span> _tmain(<span class="keyword">int</span> argc, _TCHAR* argv[])  </div><div class="line">&#123;  </div><div class="line">    <span class="comment">//求和  </span></div><div class="line">    <span class="keyword">double</span> cnt = sum(<span class="number">6</span>, <span class="number">1.1</span>, <span class="number">2.2</span>, <span class="number">3.3</span>, <span class="number">4.4</span>, <span class="number">5.5</span>, <span class="number">6.6</span>);  </div><div class="line">    <span class="built_in">printf</span>(<span class="string">"sum: %f\n"</span>, cnt);  </div><div class="line">  </div><div class="line">    <span class="comment">//格式化字符串  </span></div><div class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> szTmp = format(<span class="string">"%s,%s,%s"</span>, <span class="string">"this"</span>, <span class="string">"is"</span>, <span class="string">"kandy"</span>);  </div><div class="line">    <span class="built_in">printf</span>(<span class="string">"%s \n"</span>, szTmp.c_str());  </div><div class="line">  </div><div class="line">    system(<span class="string">"pause"</span>);  </div><div class="line">  </div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>对于可变参数函数的调用有一点需要注意：实际的可变参数的个数必须比前面强制参数中指定的个数要多，或者不小于。也即后续参数多一点不要紧，但不能少！如果少了则会访问到函数参数以外的堆栈区域，这可能会把程序搞崩掉。前面强制参数中指定的类型和后面实际参数的类型不匹配也有可能造成程序崩溃。 </p>
+<h2 id="变参的参数传递"><a href="#变参的参数传递" class="headerlink" title="变参的参数传递"></a>变参的参数传递</h2><p>我们实际是想传递这些参数，如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">vp2</span><span class="params">(<span class="keyword">char</span> *pFormat, ...)</span> </span></div><div class="line"><span class="function"></span>&#123; </div><div class="line">    va_list args; </div><div class="line">    va_start (args, pFormat); </div><div class="line">        ..... </div><div class="line">    va_end (args); </div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">vp1</span><span class="params">(<span class="keyword">char</span> *pFormat, ...)</span> </span></div><div class="line"><span class="function"></span>&#123; </div><div class="line">   vp2(????);  <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>????</code>处如何传参呢？</p>
+<p>一个最有效的方法就是 vp1 直接把参数 format 出来，再传递给 vp2</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/c-c/" rel="tag"># c/c++</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/17/C++ 之字符判断/" rel="next" title="C++ 之字符判断">
+                <i class="fa fa-chevron-left"></i> C++ 之字符判断
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/20/Windows 下编译 Lua/" rel="prev" title="Windows 下编译 Lua">
+                Windows 下编译 Lua <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/harrile.png"
+               alt="harrile" />
+          <p class="site-author-name" itemprop="name">harrile</p>
+           
+              <p class="site-description motion-element" itemprop="description">一亩三分地</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/harrile" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#变长参数函数的实现"><span class="nav-number">1.</span> <span class="nav-text">变长参数函数的实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#变参的参数传递"><span class="nav-number">2.</span> <span class="nav-text">变参的参数传递</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">harrile</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
