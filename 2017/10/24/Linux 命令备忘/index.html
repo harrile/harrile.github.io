@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="linux,tool," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="Linux 命令有些很常用，有些很有用  作为一个软件工程师，学习Linux是我做过的最好的时间投资。因为它是一个用户必须理解和维护的系统，每天的使用经验就像在水坑中添加一滴水一样。很长时间以后，水坑就变成了湖泊，甚至海洋。 今天，作为一名30岁的工程师，我仍然受益于多年前学到的知识，那时我是一个雄心勃勃的初学者。  cat 追加文件并在标准输出上打印 可以串联多个文件  sort– 对文本文件进">
+<meta name="keywords" content="linux,tool">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux 命令备忘">
+<meta property="og:url" content="http://yoursite.com/2017/10/24/Linux 命令备忘/index.html">
+<meta property="og:site_name" content="荷田农本">
+<meta property="og:description" content="Linux 命令有些很常用，有些很有用  作为一个软件工程师，学习Linux是我做过的最好的时间投资。因为它是一个用户必须理解和维护的系统，每天的使用经验就像在水坑中添加一滴水一样。很长时间以后，水坑就变成了湖泊，甚至海洋。 今天，作为一名30岁的工程师，我仍然受益于多年前学到的知识，那时我是一个雄心勃勃的初学者。  cat 追加文件并在标准输出上打印 可以串联多个文件  sort– 对文本文件进">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-10-24T07:44:49.018Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux 命令备忘">
+<meta name="twitter:description" content="Linux 命令有些很常用，有些很有用  作为一个软件工程师，学习Linux是我做过的最好的时间投资。因为它是一个用户必须理解和维护的系统，每天的使用经验就像在水坑中添加一滴水一样。很长时间以后，水坑就变成了湖泊，甚至海洋。 今天，作为一名30岁的工程师，我仍然受益于多年前学到的知识，那时我是一个雄心勃勃的初学者。  cat 追加文件并在标准输出上打印 可以串联多个文件  sort– 对文本文件进">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/10/24/Linux 命令备忘/"/>
+
+
+
+
+
+  <title>Linux 命令备忘 | 荷田农本</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">荷田农本</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/24/Linux 命令备忘/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="harrile">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/harrile.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="荷田农本">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Linux 命令备忘</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-24T13:18:00+08:00">
+                2017-10-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Linux 命令有些很常用，有些很有用</p>
+<blockquote>
+<p>作为一个软件工程师，学习Linux是我做过的最好的时间投资。因为它是一个用户必须理解和维护的系统，每天的使用经验就像在水坑中添加一滴水一样。很长时间以后，水坑就变成了湖泊，甚至海洋。</p>
+<p>今天，作为一名30岁的工程师，我仍然受益于多年前学到的知识，那时我是一个雄心勃勃的初学者。</p>
+</blockquote>
+<h2 id="cat"><a href="#cat" class="headerlink" title="cat"></a>cat</h2><ul>
+<li>追加文件并在标准输出上打印</li>
+<li>可以串联多个文件</li>
+</ul>
+<h2 id="sort"><a href="#sort" class="headerlink" title="sort"></a>sort</h2><p>– 对文本文件进行行排序，这里使用排序是不错的选择</p>
+<h2 id="grep"><a href="#grep" class="headerlink" title="grep"></a>grep</h2><ul>
+<li>grep, egrep, fgrep–进行匹配输出</li>
+</ul>
+<h2 id="cut"><a href="#cut" class="headerlink" title="cut"></a>cut</h2><p>– 从文件的每一行删除一部分</p>
+<h2 id="sed"><a href="#sed" class="headerlink" title="sed"></a>sed</h2><p>– 流编辑器。用来处理文本转换。</p>
+<h2 id="uniq"><a href="#uniq" class="headerlink" title="uniq"></a>uniq</h2><p>– 去除重复行</p>
+<h2 id="find"><a href="#find" class="headerlink" title="find"></a>find</h2><p>– 在目录里找文件</p>
+<h2 id="less"><a href="#less" class="headerlink" title="less"></a>less</h2><p>– 在一个文件里面向前向后移动</p>
+<p>译者注：让你生活更简单的几个不常用的Linux命令。以下为译文：</p>
+<p>作为一个软件工程师，学习Linux是我做过的最好的时间投资。因为它是一个用户必须理解和维护的系统，每天的使用经验就像在水坑中添加一滴水一样。很长时间以后，水坑就变成了湖泊，甚至海洋。</p>
+<p>今天，作为一名30岁的工程师，我仍然受益于多年前学到的知识，那时我是一个雄心勃勃的初学者。在另一篇博客文章中，我更详细地解释了为什么Linux更适合软件开发人员。</p>
+<p>在这篇文章中，我将分享我个人使用和推荐的一些不太流行但非常有用的Linux命令。如果你有一个苹果笔记本，那很好，因为我提到的大部分命令也存在于OSX中。</p>
+<h2 id="file"><a href="#file" class="headerlink" title="file"></a>file</h2><ul>
+<li>返回一个指定文件的信息。</li>
+</ul>
+<h2 id="iotop-powertop-nethogs"><a href="#iotop-powertop-nethogs" class="headerlink" title="iotop, powertop, nethogs"></a>iotop, powertop, nethogs</h2><p>你如何监控Linux系统中发生了什么？这三个命令可以帮上大忙；</p>
+<ul>
+<li>iotop: 将进程按磁盘写次数排序，并且显示程序写磁盘的次数和频率。</li>
+<li>powertop: 将进程按能量消耗列表显示。这是一个重要的命令，尤其是当你在外面不能为你的电脑充电的时候。</li>
+<li>nethogs: 将进程按网络流量列表显示。</li>
+</ul>
+<h2 id="tee"><a href="#tee" class="headerlink" title="tee"></a>tee</h2><p>tee 将程序的输出结果重定向，使得我们可以同时显示和保存结果</p>
+<h2 id="pidof-kill-and-pkill"><a href="#pidof-kill-and-pkill" class="headerlink" title="pidof, kill and pkill"></a>pidof, kill and pkill</h2><p>这三个重要命令帮助你控制系统中运行的程序。</p>
+<ul>
+<li>pidof 打印出正在运行程序的进程ID。例如，下面的命令将输出nginx的进程ID:</li>
+<li>pkill 是一个快捷命令，可以终止匹配的进程:</li>
+</ul>
+<h2 id="tmux"><a href="#tmux" class="headerlink" title="tmux"></a>tmux</h2><p>如果还你没有安装tmux，请一定安装它。 tmux是你终端的优秀窗口和会话管理器。</p>
+<h2 id="tree"><a href="#tree" class="headerlink" title="tree"></a>tree</h2><p>以树状格式列出目录的内容。</p>
+<h2 id="htop"><a href="#htop" class="headerlink" title="htop"></a>htop</h2><p>著名的进程监视器。它有一个漂亮多彩的命令行界面。一些有用的快捷键：</p>
+<ul>
+<li>\ 过滤</li>
+<li>/ 搜索</li>
+<li>，选择排序条件</li>
+<li>k 发送kill指令</li>
+<li>u 按用户过滤结果</li>
+<li>t 打开/关闭 树形(tree) 模式</li>
+<li>-和+ 展开/关闭进程树</li>
+<li>H 关闭显示进程</li>
+</ul>
+<h2 id="chroot"><a href="#chroot" class="headerlink" title="chroot"></a>chroot</h2><p>魔术师们喜欢这个命令，因为它在给定的目录中打开了一个新的TTY。这意味着，你可以创建一个文件夹，在其中设置一个新的Linux系统，并随时切换到该“子系统”。</p>
+<h2 id="dialog"><a href="#dialog" class="headerlink" title="dialog"></a>dialog</h2><p>在命令行上与用户交互的一种非常简单而且不错的方式。例如，下面的命令显示了一个不错的输入框:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dialog --title <span class="string">"Oh hey"</span> --inputbox <span class="string">"Howdy?"</span> 8 55</div></pre></td></tr></table></figure>
+<p>它存在于Linux和OSX系统上，并支持许多其他类型的对话框:消息框，菜单，确认框，进度条…</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="http://www.vaikan.com/8-linux-commands-every-developer-should-know/" target="_blank" rel="external">每个程序员都应该知道的8个Linux命令</a></li>
+<li><a href="http://blog.csdn.net/dev_csdn/article/details/78294846" target="_blank" rel="external">每个开发人员都应该知道的10个Linux命令</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag"># linux</a>
+          
+            <a href="/tags/tool/" rel="tag"># tool</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/20/Windows 下编译 Lua/" rel="next" title="Windows 下编译 Lua">
+                <i class="fa fa-chevron-left"></i> Windows 下编译 Lua
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/24/MySQL C++ API/" rel="prev" title="MySQL C++ API 示例">
+                MySQL C++ API 示例 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/harrile.png"
+               alt="harrile" />
+          <p class="site-author-name" itemprop="name">harrile</p>
+           
+              <p class="site-description motion-element" itemprop="description">一亩三分地</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">32</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/harrile" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#cat"><span class="nav-number">1.</span> <span class="nav-text">cat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sort"><span class="nav-number">2.</span> <span class="nav-text">sort</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#grep"><span class="nav-number">3.</span> <span class="nav-text">grep</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cut"><span class="nav-number">4.</span> <span class="nav-text">cut</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sed"><span class="nav-number">5.</span> <span class="nav-text">sed</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#uniq"><span class="nav-number">6.</span> <span class="nav-text">uniq</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#find"><span class="nav-number">7.</span> <span class="nav-text">find</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#less"><span class="nav-number">8.</span> <span class="nav-text">less</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#file"><span class="nav-number">9.</span> <span class="nav-text">file</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iotop-powertop-nethogs"><span class="nav-number">10.</span> <span class="nav-text">iotop, powertop, nethogs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tee"><span class="nav-number">11.</span> <span class="nav-text">tee</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pidof-kill-and-pkill"><span class="nav-number">12.</span> <span class="nav-text">pidof, kill and pkill</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tmux"><span class="nav-number">13.</span> <span class="nav-text">tmux</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tree"><span class="nav-number">14.</span> <span class="nav-text">tree</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#htop"><span class="nav-number">15.</span> <span class="nav-text">htop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#chroot"><span class="nav-number">16.</span> <span class="nav-text">chroot</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dialog"><span class="nav-number">17.</span> <span class="nav-text">dialog</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">18.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">harrile</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
