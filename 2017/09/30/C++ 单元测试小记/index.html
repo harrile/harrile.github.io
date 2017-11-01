@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="c/c++,gtest,gmock,xunit," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="项目中用到的单元测试套件选择的是gtest，这里记录有关的内容。  目前针对C++，可供选择的xUnit套件有gtest，Testngpp，CppUnit，CXXTest以及Boost Test等. 目前最多人使用的应该是gtest，由于使用广泛所以非常成熟，支持跨平台，方便简单容易上手，提供了丰富的断言机制和成熟的用例管理. 当然gtest也有其问题，主要是测试注册机制不够优雅导致限制过多，测试">
+<meta name="keywords" content="c&#x2F;c++,gtest,gmock,xunit">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++ 单元测试小记">
+<meta property="og:url" content="http://yoursite.com/2017/09/30/C++ 单元测试小记/index.html">
+<meta property="og:site_name" content="荷田农本">
+<meta property="og:description" content="项目中用到的单元测试套件选择的是gtest，这里记录有关的内容。  目前针对C++，可供选择的xUnit套件有gtest，Testngpp，CppUnit，CXXTest以及Boost Test等. 目前最多人使用的应该是gtest，由于使用广泛所以非常成熟，支持跨平台，方便简单容易上手，提供了丰富的断言机制和成熟的用例管理. 当然gtest也有其问题，主要是测试注册机制不够优雅导致限制过多，测试">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-01T09:47:17.838Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C++ 单元测试小记">
+<meta name="twitter:description" content="项目中用到的单元测试套件选择的是gtest，这里记录有关的内容。  目前针对C++，可供选择的xUnit套件有gtest，Testngpp，CppUnit，CXXTest以及Boost Test等. 目前最多人使用的应该是gtest，由于使用广泛所以非常成熟，支持跨平台，方便简单容易上手，提供了丰富的断言机制和成熟的用例管理. 当然gtest也有其问题，主要是测试注册机制不够优雅导致限制过多，测试">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/30/C++ 单元测试小记/"/>
+
+
+
+
+
+  <title>C++ 单元测试小记 | 荷田农本</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">荷田农本</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/30/C++ 单元测试小记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="harrile">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/harrile.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="荷田农本">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">C++ 单元测试小记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-30T16:19:16+08:00">
+                2017-09-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>项目中用到的单元测试套件选择的是<code>gtest</code>，这里记录有关的内容。</p>
+<blockquote>
+<p>目前针对C++，可供选择的xUnit套件有gtest，Testngpp，CppUnit，CXXTest以及Boost Test等. 目前最多人使用的应该是gtest，由于使用广泛所以非常成熟，支持跨平台，方便简单容易上手，提供了丰富的断言机制和成熟的用例管理. 当然gtest也有其问题，主要是测试注册机制不够优雅导致限制过多，测试用例运行期不能隔离导致互相影响，测试工程的组织不能模块化导致单元测试不能显示化物理依赖，无法低成本完成测试依赖文件的物理替换.</p>
+<p>经过个人使用，目前功能最强大的C++测试套件应当是Testngpp，它也支持跨平台，测试注册依靠脚本扫描所以限制很少，另外和gtest一样断言丰富，用例管理成熟. 它最大的强大之处是支持沙盒模式，测试用例运行期间互相隔离，不会彼此影响. 另外，Testngpp支持模块化管理测试工程，对于单元测试可以显示化物理依赖. 同时模块化内可以方便的进行测试依赖文件的物理替换，这一特性对于没有虚接口情况下的mock非常实用.但是由于Testngpp的强大，也导致了它某些情况下不如gtest方便使用.</p>
+<p>在使用xUnit的同时再能结合一款合适的Mock框架，可以大大降低单元测试的成本.对于C++目前最好用Mock框架是Mockcpp，没有之一! 用gmock的同学尽快转过来:)! 由于Mock经常容易被滥用，导致过多的针对行为进行验证.而且往往对于测试直接打桩进行状态验证成本并不高，所以目前来说我已经很少使用Mock工具了.但是留着它在适合的时候偶尔使用一下也是不错的.</p>
+<p>——<a href="http://blog.jobbole.com/106055/" target="_blank" rel="external">《高效重构 C++ 代码》</a></p>
+</blockquote>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>关于gtest的内容基本参考自《<a href="http://www.cnblogs.com/coderzh/archive/2009/04/06/1426755.html" target="_blank" rel="external">玩转Google开源C++单元测试框架Google Test系列</a>》</p>
+<p>如果你想由简而难，参考上面系列就可以了。我这里逻辑是由整体而细节。</p>
+<h2 id="测试项目整体描述"><a href="#测试项目整体描述" class="headerlink" title="测试项目整体描述"></a>测试项目整体描述</h2><p>一个测试工程应该包含以下内容：</p>
+<ul>
+<li>测试数据定义：将测试案例所需要的数据，以及数据之间的联系全部在预先定义好。测试数据与案例逻辑的分离，有利于维护和扩展测试案例。gTest 支持测试数据参数化，参数化数据也在这里。</li>
+<li>被测接口封装：测试对象可以是一个类、对象或者函数，甚至可以是整个应用程序封装可以明确的表示出你的测试对象是什么，也可以为复杂调用对象包装简单调用接口。</li>
+<li>测试事件：gtest 提供了多种事件机制，非常方便在案例之前或之后做一些操作。事件可以使全局的，所有案例执行前后；可以是 TestSuite 级别的，在某一批案例中第一个案例前，最后一个案例执行后；也可以是 TestCase 级别的，每个 TestCase 前后执行。</li>
+<li>测试用例</li>
+<li>测试检测：对于一个复杂系统的接口测试，仅仅坚持输入和输出是远远不够的。比如测试一个写数据库的函数，函数的返回值告诉你数据已经成功写入是远远不够的，你必须亲身去数据库中查个究竟才行。</li>
+</ul>
+<p>那么一个测试用例就应该是这样的：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">TEST(TestFoo, JustDemo)</div><div class="line">&#123;</div><div class="line">    GetTestData(); <span class="comment">// 获取测试数据</span></div><div class="line">    CallSUT(); <span class="comment">// 调用被测方法</span></div><div class="line">    CheckSomething(); <span class="comment">// 检查点验证</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="简单的测试项目"><a href="#简单的测试项目" class="headerlink" title="简单的测试项目"></a>简单的测试项目</h2><p>我们要做单元测试首先要包含测试框架和被测试对象，要有 main 函数去运行测试用例</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;gtest/gtest.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"my_test_object.h"</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>* argv[])</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    testing::InitGoogleTest(&amp;argc, argv);</div><div class="line">    <span class="keyword">return</span> RUN_ALL_TESTS();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="测试函数"><a href="#测试函数" class="headerlink" title="测试函数"></a>测试函数</h2><p>假设被测函数为：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">addFun</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">return</span> a+b;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>接下来写测试案例：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;gtest/gtest.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"my_test_object.h"</span></span></div><div class="line"></div><div class="line">TEST(add_test, test_add_true)</div><div class="line">&#123;</div><div class="line">    EXPECT_EQ(<span class="number">2</span>, addFun(<span class="number">1</span>,<span class="number">1</span>));</div><div class="line">    EXPECT_EQ(<span class="number">5</span>, addFun(<span class="number">2</span>,<span class="number">3</span>));</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>* argv[])</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    testing::InitGoogleTest(&amp;argc, argv);</div><div class="line">    <span class="keyword">return</span> RUN_ALL_TESTS();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>TEST</code>这个宏，它有两个参数，官方的对这两个参数的解释为：[TestCaseName，TestName]，而我对这两个参数的定义是：[TestSuiteName，TestCaseName]</p>
+<p>对检查点的检查，使用到<code>EXPECT_EQ</code>宏，这个宏用来比较两个数字是否相等。Google还包装了一系列EXPECT<em>* 和ASSERT</em>*的宏，而EXPECT系列和ASSERT系列的区别是：</p>
+<pre><code>1. EXPECT_* 失败时，案例继续往下执行。
+2. ASSERT_* 失败时，直接在当前函数中返回，当前函数中ASSERT_*后面的语句将不会执行。 
+</code></pre><p><code>testing::InitGoogleTest(&amp;argc, argv);</code>：gtest的测试案例允许接收一系列的命令行参数，因此，我们将命令行参数传递给gtest，进行一些初始化操作。</p>
+<p><code>RUN_ALL_TESTS()</code>：运行所有测试案例</p>
+<h2 id="测试事件"><a href="#测试事件" class="headerlink" title="测试事件"></a>测试事件</h2><h3 id="全局事件"><a href="#全局事件" class="headerlink" title="全局事件"></a>全局事件</h3><p>要实现全局事件，必须写一个类，继承<code>testing::Environment</code>类，实现里面的<code>SetUp</code>和<code>TearDown</code>方法。</p>
+<ul>
+<li>SetUp()方法在所有案例执行前执行</li>
+<li>TearDown()方法在所有案例执行后执行</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">QUERY_ENVIROMENT</span> :</span> <span class="keyword">public</span> testing::Environment</div><div class="line">&#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">SetUp</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"--- DB_ENVIROMENT SETUP ---"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">TearDown</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"--- DB_ENVIROMENT TEARDOWN ---"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>当然，这样还不够，我们还需要告诉 gtest 添加这个全局事件，我们需要在 main 函数中通过<code>testing::AddGlobalTestEnvironment</code>方法将事件挂进来，也就是说，我们可以写很多个这样的类，然后将他们的事件都挂上去。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, _TCHAR* argv[])</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    testing::AddGlobalTestEnvironment(<span class="keyword">new</span> QUERY_ENVIROMENT);</div><div class="line">    testing::InitGoogleTest(&amp;argc, argv);</div><div class="line">    <span class="keyword">return</span> RUN_ALL_TESTS();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="TestSuite事件"><a href="#TestSuite事件" class="headerlink" title="TestSuite事件"></a>TestSuite事件</h3><p>我们需要写一个类，继承testing::Test，然后实现两个静态方法</p>
+<ul>
+<li>SetUpTestCase() 方法在第一个TestCase之前执行</li>
+<li>TearDownTestCase() 方法在最后一个TestCase之后执行</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">DB_QUERY_FUN_SUIT</span> :</span> <span class="keyword">public</span> testing::Test</div><div class="line">&#123;</div><div class="line"><span class="keyword">protected</span>:</div><div class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">SetUpTestCase</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        m_query = <span class="keyword">new</span> DbClient();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">TearDownTestCase</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">delete</span> m_query;</div><div class="line">        m_query = <span class="literal">NULL</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">static</span> DbClient* m_query;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>在编写测试案例时，我们需要使用<code>TEST_F</code>这个宏，第一个参数必须是我们上面类的名字，代表一个 TestSuite。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">TEST_F(DB_QUERY_FUN_SUIT, DISABLED_DB_COMM_INIT)</div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> init_rel = m_query-&gt;InitInstance();</div><div class="line">    EXPECT_TRUE(init_rel &gt;= <span class="number">0</span> ? <span class="literal">true</span> : <span class="literal">false</span>) &lt;&lt; <span class="string">"INIT DB_COMM_SQL FAILED"</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line">TEST_F(DB_QUERY_FUN_SUIT, DB_COMM_CREATE)</div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> iRel = m_query-&gt;Create(PG_TYPE, <span class="string">"smartsys"</span>, user_name, password);</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"DB type 4(PGSQL), create result: "</span> &lt;&lt; iRel &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    </div><div class="line">    EXPECT_TRUE(iRel &gt;= <span class="number">0</span> ? <span class="literal">true</span> : <span class="literal">false</span>) &lt;&lt; <span class="string">"DB_COMM_SQL CREATE INSTANCE FAILED"</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="TestCase事件"><a href="#TestCase事件" class="headerlink" title="TestCase事件"></a>TestCase事件</h3><p>TestCase事件是挂在每个案例执行前后的，实现方式和上面的几乎一样</p>
+<ul>
+<li>SetUp() 方法在每个 TestCase 之前执行</li>
+<li>TearDown() 方法在每个 TestCase 之后执行</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">DB_QUERY_FUN_SUIT</span> :</span> <span class="keyword">public</span> testing::Test</div><div class="line">&#123;</div><div class="line"><span class="keyword">protected</span>:</div><div class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">SetUp</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        m_query = <span class="keyword">new</span> DbClient();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">TearDown</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">delete</span> m_query;</div><div class="line">        m_query = <span class="literal">NULL</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">static</span> DbClient* m_query;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h2 id="断言"><a href="#断言" class="headerlink" title="断言"></a>断言</h2><p>本节主要介绍 gtest 中的所有断言相关的宏。 gtest 中，断言的宏可以理解为分为两类，一类是<code>ASSERT</code>系列，一类是<code>EXPECT</code>系列。一个直观的解释就是：</p>
+<ul>
+<li>ASSERT_* 系列的断言，当检查点失败时，退出当前函数（注意：并非退出当前案例）。 </li>
+<li>EXPECT_* 系列的断言，当检查点失败时，继续往下执行。</li>
+</ul>
+<h3 id="断言输出"><a href="#断言输出" class="headerlink" title="断言输出"></a>断言输出</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// int型比较，预期值：3，实际值：Add(1, 2)</span></div><div class="line">EXPECT_EQ(<span class="number">3</span>, Add(<span class="number">1</span>, <span class="number">2</span>))</div><div class="line"><span class="comment">//</span></div></pre></td></tr></table></figure>
+<p>假如你的Add(1, 2) 结果为4的话，会在结果中输出：</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">gtestdemo.cpp(<span class="number">16</span>): error: Value of: Add(<span class="number">1</span>, <span class="number">2</span>)</div><div class="line"><span class="function">  Actual: 4</span></div><div class="line"><span class="function"><span class="title">Expected</span>:3</span></div></pre></td></tr></table></figure>
+<p>还可以通过操作符<code>&lt;&lt;</code>将一些自定义的信息输出，通常，这对于调试或是对一些检查点的补充说明来说，非常有用！</p>
+<p>如果不使用<code>&lt;&lt;</code>操作符自定义输出的话：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; x.size(); ++i) </div><div class="line">&#123;</div><div class="line">    EXPECT_EQ(x[i], y[i]);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>看到的结果将是这样的，你根本不知道出错时 i 等于几：</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">gtestdemo.cpp(<span class="number">25</span>): error: Value of: y[i]</div><div class="line"><span class="function">  Actual: 4</span></div><div class="line"><span class="function"><span class="title">Expected</span>: <span class="title">x</span>[<span class="title">i</span>]</span></div><div class="line"><span class="function"><span class="title">Which</span> <span class="title">is</span>: 3</span></div></pre></td></tr></table></figure>
+<p>如果使用&lt;&lt;操作符将一些重要信息输出的话：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; x.size(); ++i)</div><div class="line">&#123;</div><div class="line">    EXPECT_EQ(x[i], y[i]) &lt;&lt; <span class="string">"Vectors x and y differ at index "</span> &lt;&lt; i;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>从输出结果中就可以定位到在 i = 2 时出现了错误。这样的输出结果看起来更加有用，容易理解： </p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">gtestdemo.cpp(<span class="number">25</span>): error: Value of: y[i]</div><div class="line"><span class="function">  Actual: 4</span></div><div class="line"><span class="function"><span class="title">Expected</span>: <span class="title">x</span>[<span class="title">i</span>]</span></div><div class="line"><span class="function"><span class="title">Which</span> <span class="title">is</span>: 3</span></div><div class="line"><span class="function"><span class="title">Vectors</span> <span class="title">x</span> <span class="title">and</span> <span class="title">y</span> <span class="title">differ</span> <span class="title">at</span> <span class="title">index</span> 2</span></div></pre></td></tr></table></figure>
+<h3 id="断言列表"><a href="#断言列表" class="headerlink" title="断言列表"></a>断言列表</h3><h4 id="布尔值检查"><a href="#布尔值检查" class="headerlink" title="布尔值检查"></a>布尔值检查</h4><table>
+<thead>
+<tr>
+<th style="text-align:center">Fatal assertion</th>
+<th style="text-align:center">Nonfatal assertion</th>
+<th style="text-align:center">Verifies</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">ASSERT_TRUE(condition);</td>
+<td style="text-align:center">EXPECT_TRUE(condition);</td>
+<td style="text-align:center">condition is true</td>
+</tr>
+<tr>
+<td style="text-align:center">ASSERT_FALSE(condition);</td>
+<td style="text-align:center">EXPECT_FALSE(condition);</td>
+<td style="text-align:center">condition is false</td>
+</tr>
+</tbody>
+</table>
+<h4 id="数值型数据检查"><a href="#数值型数据检查" class="headerlink" title="数值型数据检查"></a>数值型数据检查</h4><table>
+<thead>
+<tr>
+<th style="text-align:center">Fatal assertion</th>
+<th style="text-align:center">Nonfatal assertion</th>
+<th style="text-align:center">Verifies</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">ASSERT_EQ(expected, actual);</td>
+<td style="text-align:center">EXPECT_EQ(expected, actual);</td>
+<td style="text-align:center">expected == actual</td>
+</tr>
+<tr>
+<td style="text-align:center">ASSERT_NE(val1, val2);</td>
+<td style="text-align:center">EXPECT_NE(val1, val2);</td>
+<td style="text-align:center">val1 != val2</td>
+</tr>
+<tr>
+<td style="text-align:center">ASSERT_LT(val1, val2);</td>
+<td style="text-align:center">EXPECT_LT(val1, val2);</td>
+<td style="text-align:center">val1 &lt; val2</td>
+</tr>
+<tr>
+<td style="text-align:center">ASSERT_LE(val1, val2);</td>
+<td style="text-align:center">EXPECT_LE(val1, val2);</td>
+<td style="text-align:center">val1 &lt;= val2</td>
+</tr>
+<tr>
+<td style="text-align:center">ASSERT_GT(val1, val2);</td>
+<td style="text-align:center">EXPECT_GT(val1, val2);</td>
+<td style="text-align:center">val1 &gt; val2</td>
+</tr>
+<tr>
+<td style="text-align:center">ASSERT_GE(val1, val2);</td>
+<td style="text-align:center">EXPECT_GE(val1, val2);</td>
+<td style="text-align:center">val1 &gt;= val2</td>
+</tr>
+</tbody>
+</table>
+<h4 id="字符串检查"><a href="#字符串检查" class="headerlink" title="字符串检查"></a>字符串检查</h4><table>
+<thead>
+<tr>
+<th style="text-align:center">Fatal assertion</th>
+<th style="text-align:center">Nonfatal assertion</th>
+<th style="text-align:center">Verifies</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">ASSERT_STREQ(expected_str, actual_str);</td>
+<td style="text-align:center">EXPECT_STREQ(expected_str, actual_str);</td>
+<td style="text-align:center">the two C strings have the same content</td>
+</tr>
+<tr>
+<td style="text-align:center">ASSERT_STRNE(str1, str2);</td>
+<td style="text-align:center">EXPECT_STRNE(str1, str2);</td>
+<td style="text-align:center">the two C strings have different content</td>
+</tr>
+<tr>
+<td style="text-align:center">ASSERT_STRCASEEQ(expected_str,actual_str);</td>
+<td style="text-align:center">EXPECT_STRCASEEQ(expected_str,actual_str);</td>
+<td style="text-align:center">the two C strings have the same content, ignoring case</td>
+</tr>
+<tr>
+<td style="text-align:center">ASSERT_STRCASENE(str1, str2);</td>
+<td style="text-align:center">EXPECT_STRCASENE(str1, str2);</td>
+<td style="text-align:center">the two C strings have different content, ignoring case</td>
+</tr>
+</tbody>
+</table>
+<p><strong>STREQ 和 STRNE 同时支持<code>char*</code>和<code>wchar_t*</code>类型的，STRCASEEQ 和 STRCASENE 却只接收<code>char*</code></strong></p>
+<h4 id="显示返回成功或失败"><a href="#显示返回成功或失败" class="headerlink" title="显示返回成功或失败"></a>显示返回成功或失败</h4><p>直接返回成功：SUCCEED();</p>
+<p>返回失败： </p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Fatal assertion</th>
+<th style="text-align:center">Nonfatal assertion</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">FAIL();</td>
+<td style="text-align:center">ADD_FAILURE();</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">TEST(ExplicitTest, Demo)</div><div class="line">&#123;</div><div class="line">    ADD_FAILURE() &lt;&lt; <span class="string">"Sorry"</span>; <span class="comment">// None Fatal Asserton，继续往下执行。</span></div><div class="line"></div><div class="line">    <span class="comment">//FAIL(); // Fatal Assertion，不往下执行该案例。</span></div><div class="line"></div><div class="line">    SUCCEED();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="异常检查"><a href="#异常检查" class="headerlink" title="异常检查"></a>异常检查</h4><table>
+<thead>
+<tr>
+<th style="text-align:center">Fatal assertion</th>
+<th style="text-align:center">Nonfatal assertion</th>
+<th style="text-align:center">Verifies</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">ASSERT_THROW(statement, exception_type);</td>
+<td style="text-align:center">EXPECT_THROW(statement, exception_type);</td>
+<td style="text-align:center">statement throws an exception of the given type</td>
+</tr>
+<tr>
+<td style="text-align:center">ASSERT_ANY_THROW(statement);</td>
+<td style="text-align:center">EXPECT_ANY_THROW(statement);</td>
+<td style="text-align:center">statement throws an exception of any type</td>
+</tr>
+<tr>
+<td style="text-align:center">ASSERT_NO_THROW(statement);</td>
+<td style="text-align:center">EXPECT_NO_THROW(statement);</td>
+<td style="text-align:center">statement doesn’t throw any exception</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Predicate-Assertions"><a href="#Predicate-Assertions" class="headerlink" title="Predicate Assertions"></a>Predicate Assertions</h4><p>在使用EXPECT_TRUE或ASSERT_TRUE时，有时希望能够输出更加详细的信息，比如检查一个函数的返回值TRUE还是FALSE时，希望能够输出传入的参数是什么，以便失败后好跟踪。因此提供了如下的断言：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Fatal assertion</th>
+<th style="text-align:center">Nonfatal assertion</th>
+<th style="text-align:center">Verifies</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">ASSERT_PRED1(pred1, val1);</td>
+<td style="text-align:center">EXPECT_PRED1(pred1, val1);</td>
+<td style="text-align:center">pred1(val1) returns true</td>
+</tr>
+<tr>
+<td style="text-align:center">ASSERT_PRED2(pred2, val1, val2);</td>
+<td style="text-align:center">EXPECT_PRED2(pred2, val1, val2);</td>
+<td style="text-align:center">pred2(val1, val2) returns true</td>
+</tr>
+<tr>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+</tr>
+</tbody>
+</table>
+<p>还可以自定义输出格式，通过如下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Fatal assertion</th>
+<th style="text-align:center">Nonfatal assertion</th>
+<th style="text-align:center">Verifies</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">ASSERT_PRED_FORMAT1(pred_format1, val1);`</td>
+<td style="text-align:center">EXPECT_PRED_FORMAT1(pred_format1, val1);</td>
+<td style="text-align:center">pred_format1(val1) is successful</td>
+</tr>
+<tr>
+<td style="text-align:center">ASSERT_PRED_FORMAT2(pred_format2, val1, val2);</td>
+<td style="text-align:center">EXPECT_PRED_FORMAT2(pred_format2, val1, val2);</td>
+<td style="text-align:center">pred_format2(val1, val2) is successful</td>
+</tr>
+<tr>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+</tr>
+</tbody>
+</table>
+<h4 id="浮点型检查"><a href="#浮点型检查" class="headerlink" title="浮点型检查"></a>浮点型检查</h4><table>
+<thead>
+<tr>
+<th style="text-align:center">Fatal assertion</th>
+<th style="text-align:center">Nonfatal assertion</th>
+<th style="text-align:center">Verifies</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">ASSERT_FLOAT_EQ(expected, actual);</td>
+<td style="text-align:center">EXPECT_FLOAT_EQ(expected, actual);</td>
+<td style="text-align:center">the two float values are almost equal</td>
+</tr>
+<tr>
+<td style="text-align:center">ASSERT_DOUBLE_EQ(expected, actual);</td>
+<td style="text-align:center">EXPECT_DOUBLE_EQ(expected, actual);</td>
+<td style="text-align:center">the two double values are almost equal</td>
+</tr>
+</tbody>
+</table>
+<p>对相近的两个数比较：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Fatal assertion</th>
+<th style="text-align:center">Nonfatal assertion</th>
+<th style="text-align:center">Verifies</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">ASSERT_NEAR(val1, val2, abs_error);</td>
+<td style="text-align:center">EXPECT_NEAR(val1, val2, abs_error);</td>
+<td style="text-align:center">the difference between val1 and val2 doesn’t exceed the given absolute error</td>
+</tr>
+</tbody>
+</table>
+<p>同时，还可以使用：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">EXPECT_PRED_FORMAT2(testing::FloatLE, val1, val2);</div><div class="line">EXPECT_PRED_FORMAT2(testing::DoubleLE, val1, val2);</div></pre></td></tr></table></figure>
+<h4 id="Windows-HRESULT-assertions"><a href="#Windows-HRESULT-assertions" class="headerlink" title="Windows HRESULT assertions"></a>Windows HRESULT assertions</h4><p>|Fatal assertion|Nonfatal assertion|Verifies|<br>|ASSERT_HRESULT_SUCCEEDED(expression);|EXPECT_HRESULT_SUCCEEDED(expression);|expression is a success HRESULT|<br>|ASSERT_HRESULT_FAILED(expression);|EXPECT_HRESULT_FAILED(expression);|expression is a failure HRESULT| </p>
+<h4 id="类型检查"><a href="#类型检查" class="headerlink" title="类型检查"></a>类型检查</h4><p>类型检查,看下面的例子：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="class"><span class="keyword">class</span> <span class="title">FooType</span> &#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Bar</span><span class="params">()</span> </span>&#123; testing::StaticAssertTypeEq&lt;<span class="keyword">int</span>, T&gt;(); &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">TEST(TypeAssertionTest, Demo)</div><div class="line">&#123;</div><div class="line">    FooType&lt;<span class="keyword">bool</span>&gt; fooType;</div><div class="line">    fooType.Bar();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/c-c/" rel="tag"># c/c++</a>
+          
+            <a href="/tags/gtest/" rel="tag"># gtest</a>
+          
+            <a href="/tags/gmock/" rel="tag"># gmock</a>
+          
+            <a href="/tags/xunit/" rel="tag"># xunit</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/20/Flyway 笔记/" rel="next" title="Flyway 笔记">
+                <i class="fa fa-chevron-left"></i> Flyway 笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/30/Jupyter 备忘/" rel="prev" title="Jupyter 备忘">
+                Jupyter 备忘 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/harrile.png"
+               alt="harrile" />
+          <p class="site-author-name" itemprop="name">harrile</p>
+           
+              <p class="site-description motion-element" itemprop="description">一亩三分地</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+		  
+			<script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script>
+			<script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script>
+			<div class="widget-wrap">
+				<h3 class="widget-title">Tag Cloud</h3>
+				<div id="myCanvasContainer" class="widget tagcloud">
+					<canvas width="250" height="250" id="resCanvas" style="width=100%">
+						<ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai/">ai</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/alphago/">alphago</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bat/">bat</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c-c/">c/c++</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/deeplearning/">deeplearning</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/email/">email</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fastai/">fastai</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flyway/">flyway</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gmock/">gmock</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google/">google</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gtest/">gtest</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jdbc/">jdbc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jupyter/">jupyter</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kingbase/">kingbase</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lua/">lua</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/oracle/">oracle</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/phabricator/">phabricator</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/postgresql/">postgresql</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/process/">process</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/psql/">psql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sed/">sed</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/smtp/">smtp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql/">sql</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sqlnet/">sqlnet</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svn/">svn</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tool/">tool</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/">windows</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xunit/">xunit</a><span class="tag-list-count">1</span></li></ul>
+					</canvas>
+				</div>
+			</div>
+		  
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/harrile" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试项目整体描述"><span class="nav-number">2.</span> <span class="nav-text">测试项目整体描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简单的测试项目"><span class="nav-number">3.</span> <span class="nav-text">简单的测试项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试函数"><span class="nav-number">4.</span> <span class="nav-text">测试函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试事件"><span class="nav-number">5.</span> <span class="nav-text">测试事件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#全局事件"><span class="nav-number">5.1.</span> <span class="nav-text">全局事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TestSuite事件"><span class="nav-number">5.2.</span> <span class="nav-text">TestSuite事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TestCase事件"><span class="nav-number">5.3.</span> <span class="nav-text">TestCase事件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#断言"><span class="nav-number">6.</span> <span class="nav-text">断言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#断言输出"><span class="nav-number">6.1.</span> <span class="nav-text">断言输出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#断言列表"><span class="nav-number">6.2.</span> <span class="nav-text">断言列表</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#布尔值检查"><span class="nav-number">6.2.1.</span> <span class="nav-text">布尔值检查</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数值型数据检查"><span class="nav-number">6.2.2.</span> <span class="nav-text">数值型数据检查</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#字符串检查"><span class="nav-number">6.2.3.</span> <span class="nav-text">字符串检查</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#显示返回成功或失败"><span class="nav-number">6.2.4.</span> <span class="nav-text">显示返回成功或失败</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#异常检查"><span class="nav-number">6.2.5.</span> <span class="nav-text">异常检查</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Predicate-Assertions"><span class="nav-number">6.2.6.</span> <span class="nav-text">Predicate Assertions</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#浮点型检查"><span class="nav-number">6.2.7.</span> <span class="nav-text">浮点型检查</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Windows-HRESULT-assertions"><span class="nav-number">6.2.8.</span> <span class="nav-text">Windows HRESULT assertions</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类型检查"><span class="nav-number">6.2.9.</span> <span class="nav-text">类型检查</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">harrile</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
