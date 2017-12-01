@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="linux,shell," />
 
 
 
@@ -94,16 +94,18 @@
 
 
 
-<meta name="description" content="一亩三分地">
-<meta property="og:type" content="website">
-<meta property="og:title" content="荷田农本">
-<meta property="og:url" content="http://yoursite.com/tags/postgres/index.html">
+<meta name="description" content="根据系统的 CPU 占用情况，当资源紧张是，增加某些进程的优先级，使得某些进程优先处理。 通过一个 shell 脚本来完成，该脚本需要 root 权限执行 123456789101112131415161718192021222324252627282930313233343536373839404142#!/bin/sh# 监视 cpu 连续紧张的次数，作为开关，触发优先级设置max_times">
+<meta name="keywords" content="linux,shell">
+<meta property="og:type" content="article">
+<meta property="og:title" content="shell 监视系统 CPU 并提升某些进程优先级">
+<meta property="og:url" content="http://yoursite.com/2017/11/28/shell 监视 CPU 及修改进程优先级/index.html">
 <meta property="og:site_name" content="荷田农本">
-<meta property="og:description" content="一亩三分地">
+<meta property="og:description" content="根据系统的 CPU 占用情况，当资源紧张是，增加某些进程的优先级，使得某些进程优先处理。 通过一个 shell 脚本来完成，该脚本需要 root 权限执行 123456789101112131415161718192021222324252627282930313233343536373839404142#!/bin/sh# 监视 cpu 连续紧张的次数，作为开关，触发优先级设置max_times">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-28T09:58:52.700Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="荷田农本">
-<meta name="twitter:description" content="一亩三分地">
+<meta name="twitter:title" content="shell 监视系统 CPU 并提升某些进程优先级">
+<meta name="twitter:description" content="根据系统的 CPU 占用情况，当资源紧张是，增加某些进程的优先级，使得某些进程优先处理。 通过一个 shell 脚本来完成，该脚本需要 root 权限执行 123456789101112131415161718192021222324252627282930313233343536373839404142#!/bin/sh# 监视 cpu 连续紧张的次数，作为开关，触发优先级设置max_times">
 
 
 
@@ -133,13 +135,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/tags/postgres/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/11/28/shell 监视 CPU 及修改进程优先级/"/>
 
 
 
 
 
-  <title>标签: postgres | 荷田农本</title>
+  <title>shell 监视系统 CPU 并提升某些进程优先级 | 荷田农本</title>
   
 
 
@@ -158,7 +160,7 @@
     
   
 
-  <div class="container sidebar-position-left  ">
+  <div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -242,54 +244,150 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block tag">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>postgres<small>标签</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/28/shell 监视 CPU 及修改进程优先级/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="harrile">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/harrile.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="荷田农本">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2017/11/16/upsert 小记/" itemprop="url">
-              
-                <span itemprop="name">SQL 之 upsert</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">shell 监视系统 CPU 并提升某些进程优先级</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-11-16T11:19:16+08:00"
-              content="2017-11-16" >
-          11-16
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-28T14:02:00+08:00">
+                2017-11-28
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    </div>
+      
 
+      
+        <p>根据系统的 CPU 占用情况，当资源紧张是，增加某些进程的优先级，使得某些进程优先处理。</p>
+<p>通过一个 shell 脚本来完成，该脚本需要 root 权限执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/sh</span></div><div class="line"></div><div class="line"><span class="comment"># 监视 cpu 连续紧张的次数，作为开关，触发优先级设置</span></div><div class="line">max_times=3</div><div class="line"></div><div class="line"><span class="comment"># cpu 最小监视负荷百分比</span></div><div class="line">min_cpu=30.0</div><div class="line"></div><div class="line"><span class="comment"># 进程数组，空格分割</span></div><div class="line">proc=(netserver scadaserver)</div><div class="line"></div><div class="line"><span class="built_in">times</span>=0</div><div class="line"><span class="keyword">while</span> [ <span class="variable">$times</span> -ge 0 ] </div><div class="line"><span class="keyword">do</span></div><div class="line">  <span class="comment">#计算cpu总占用情况</span></div><div class="line">  cpuinfo=`mpstat -P ALL | grep all`</div><div class="line">  fcpu=`<span class="built_in">echo</span> <span class="variable">$cpuinfo</span> | cut -d <span class="string">' '</span> -f 11`</div><div class="line">  <span class="comment">#echo $fcpu</span></div><div class="line">  bcpu=`<span class="built_in">echo</span> <span class="string">"<span class="variable">$fcpu</span> &lt; <span class="variable">$min_cpu</span>"</span> | bc`</div><div class="line">  <span class="comment">#echo $bcpu</span></div><div class="line">  <span class="keyword">if</span> [ <span class="variable">$bcpu</span> -eq 1 ]</div><div class="line">  <span class="keyword">then</span></div><div class="line">    <span class="built_in">let</span> <span class="built_in">times</span>++</div><div class="line">    <span class="comment">#连续CPU资源紧张</span></div><div class="line">    <span class="keyword">if</span> [ <span class="variable">$times</span> -ge <span class="variable">$max_times</span> ]</div><div class="line">    <span class="keyword">then</span></div><div class="line">      <span class="comment">#echo $times 'ok'</span></div><div class="line">      <span class="keyword">for</span>((i=0;i&lt;<span class="variable">$&#123;#proc[@]&#125;</span>;i++))</div><div class="line">      <span class="keyword">do</span></div><div class="line">         pid=`pgrep <span class="variable">$&#123;proc[i]&#125;</span>`</div><div class="line">         <span class="built_in">echo</span> `ps -efl|grep <span class="variable">$pid</span>`</div><div class="line">         renice -5 -p <span class="variable">$pid</span></div><div class="line">         <span class="built_in">echo</span> `ps -efl|grep <span class="variable">$pid</span>`</div><div class="line">      <span class="keyword">done</span></div><div class="line">      <span class="built_in">times</span>=0</div><div class="line">    <span class="keyword">fi</span></div><div class="line">  <span class="keyword">else</span></div><div class="line">    <span class="built_in">times</span>=0</div><div class="line">    <span class="comment">#echo "not ok"</span></div><div class="line">  <span class="keyword">fi</span></div><div class="line">  sleep 2s</div><div class="line"><span class="keyword">done</span></div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag"># linux</a>
+          
+            <a href="/tags/shell/" rel="tag"># shell</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/16/upsert 小记/" rel="next" title="SQL 之 upsert">
+                <i class="fa fa-chevron-left"></i> SQL 之 upsert
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -297,6 +395,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -520,10 +622,10 @@
 
 
   
-    <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
 <script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
 
-  
+
 
   
 
