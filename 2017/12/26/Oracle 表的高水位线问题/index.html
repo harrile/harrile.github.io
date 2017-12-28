@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="ai,jupyter,python," />
+  <meta name="keywords" content="database,sql,oracle," />
 
 
 
@@ -94,18 +94,18 @@
 
 
 
-<meta name="description" content="fast.ai的学习当中用到了Jupyter，这里学习使用方法，加以备忘。  参考：《Python·Jupyter Notebook各种使用方法》  Jupyter的各种快捷键 执行当前cell，并自动跳到下一个cell：Shift Enter 执行当前cell，执行后不自动调转到下一个cell：Ctrl-Enter 是当前的cell进入编辑模式：Enter 退出当前cell的编辑模式：Esc 删">
-<meta name="keywords" content="ai,jupyter,python">
+<meta name="description" content="问题描述首先在实际项目中，出现一个问题，TRIGGERED_TAB_CHANGES表的记录数是 0，每次查询TRIGGERED_TAB_CHANGES表时，oracle 进程所占 CPU 数值较大，查询较慢。后定位到该表实际占用的数据块比较大，达到 1 个多 G，对该表的查询，变成了所有数据块的扫描，从而查询很慢，CPU 很高。这实际上是该表曾经积累了大量数据，数据删除后，空间没有释放。 问题分析">
+<meta name="keywords" content="database,sql,oracle">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Jupyter 备忘">
-<meta property="og:url" content="http://yoursite.com/2017/09/30/Jupyter 备忘/index.html">
+<meta property="og:title" content="Oracle 表的高水位线问题">
+<meta property="og:url" content="http://yoursite.com/2017/12/26/Oracle 表的高水位线问题/index.html">
 <meta property="og:site_name" content="荷田农本">
-<meta property="og:description" content="fast.ai的学习当中用到了Jupyter，这里学习使用方法，加以备忘。  参考：《Python·Jupyter Notebook各种使用方法》  Jupyter的各种快捷键 执行当前cell，并自动跳到下一个cell：Shift Enter 执行当前cell，执行后不自动调转到下一个cell：Ctrl-Enter 是当前的cell进入编辑模式：Enter 退出当前cell的编辑模式：Esc 删">
+<meta property="og:description" content="问题描述首先在实际项目中，出现一个问题，TRIGGERED_TAB_CHANGES表的记录数是 0，每次查询TRIGGERED_TAB_CHANGES表时，oracle 进程所占 CPU 数值较大，查询较慢。后定位到该表实际占用的数据块比较大，达到 1 个多 G，对该表的查询，变成了所有数据块的扫描，从而查询很慢，CPU 很高。这实际上是该表曾经积累了大量数据，数据删除后，空间没有释放。 问题分析">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-09-30T08:58:37.622Z">
+<meta property="og:updated_time" content="2017-12-20T03:27:03.481Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Jupyter 备忘">
-<meta name="twitter:description" content="fast.ai的学习当中用到了Jupyter，这里学习使用方法，加以备忘。  参考：《Python·Jupyter Notebook各种使用方法》  Jupyter的各种快捷键 执行当前cell，并自动跳到下一个cell：Shift Enter 执行当前cell，执行后不自动调转到下一个cell：Ctrl-Enter 是当前的cell进入编辑模式：Enter 退出当前cell的编辑模式：Esc 删">
+<meta name="twitter:title" content="Oracle 表的高水位线问题">
+<meta name="twitter:description" content="问题描述首先在实际项目中，出现一个问题，TRIGGERED_TAB_CHANGES表的记录数是 0，每次查询TRIGGERED_TAB_CHANGES表时，oracle 进程所占 CPU 数值较大，查询较慢。后定位到该表实际占用的数据块比较大，达到 1 个多 G，对该表的查询，变成了所有数据块的扫描，从而查询很慢，CPU 很高。这实际上是该表曾经积累了大量数据，数据删除后，空间没有释放。 问题分析">
 
 
 
@@ -135,13 +135,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/09/30/Jupyter 备忘/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/12/26/Oracle 表的高水位线问题/"/>
 
 
 
 
 
-  <title>Jupyter 备忘 | 荷田农本</title>
+  <title>Oracle 表的高水位线问题 | 荷田农本</title>
   
 
 
@@ -258,7 +258,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/30/Jupyter 备忘/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/26/Oracle 表的高水位线问题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="harrile">
@@ -275,7 +275,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Jupyter 备忘</h1>
+          <h1 class="post-title" itemprop="name headline">Oracle 表的高水位线问题</h1>
         
 
         <div class="post-meta">
@@ -287,8 +287,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-30T16:19:16+08:00">
-                2017-09-30
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-26T15:32:32+08:00">
+                2017-12-26
               </time>
             
 
@@ -325,26 +325,17 @@
       
 
       
-        <p><code>fast.ai</code>的学习当中用到了<code>Jupyter</code>，这里学习使用方法，加以备忘。</p>
-<blockquote>
-<p>参考：《<a href="http://blog.csdn.net/tina_ttl/article/details/51031113" target="_blank" rel="external">Python·Jupyter Notebook各种使用方法</a>》</p>
-</blockquote>
-<h2 id="Jupyter的各种快捷键"><a href="#Jupyter的各种快捷键" class="headerlink" title="Jupyter的各种快捷键"></a>Jupyter的各种快捷键</h2><ul>
-<li>执行当前cell，并自动跳到下一个cell：Shift Enter</li>
-<li>执行当前cell，执行后不自动调转到下一个cell：Ctrl-Enter</li>
-<li>是当前的cell进入编辑模式：Enter</li>
-<li>退出当前cell的编辑模式：Esc</li>
-<li>删除当前的cell：双D</li>
-<li>为当前的cell加入line number：单L</li>
-<li>将当前的cell转化为具有一级标题的maskdown：单1</li>
-<li>将当前的cell转化为具有二级标题的maskdown：单2</li>
-<li>将当前的cell转化为具有三级标题的maskdown：单3</li>
-<li>为一行或者多行添加/取消注释：Crtl /</li>
-<li>撤销对某个cell的删除：z</li>
-<li>浏览器的各个Tab之间切换：Crtl PgUp和Crtl PgDn</li>
-<li>快速跳转到首个cell：Crtl Home</li>
-<li>快速跳转到最后一个cell：Crtl End</li>
+        <h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>首先在实际项目中，出现一个问题，<code>TRIGGERED_TAB_CHANGES</code>表的记录数是 0，每次查询<code>TRIGGERED_TAB_CHANGES</code>表时，oracle 进程所占 CPU 数值较大，查询较慢。后定位到该表实际占用的数据块比较大，达到 1 个多 G，对该表的查询，变成了所有数据块的扫描，从而查询很慢，CPU 很高。这实际上是该表曾经积累了大量数据，数据删除后，空间没有释放。</p>
+<h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>Oracle 有个 <strong>高水位线(High Water Mark)</strong> 概念：所有的oracle段(segments，在此，为了理解方便，建议把segment作为表的一个同义词) 都有一个在段内容纳数据的上限，我们把这个上限称为”High Water Mark”或HWM。这个 HWM 是一个标记，用来说明已经有多少没有使用的数据块分配给这个 segment。HWM 通常增长的幅度为一次 5 个数据块，原则上 HWM 只会增大，不会缩小，即使将表中的数据全部删除，HWM 还是为原值，由于这个特点，使 HWM 很象一个水库的历史最高水位，这也就是 HWM 的原始含义，当然不能说一个水库没水了，就说该水库的历史最高水位为 0。但是如果我们在表上使用了 truncate 命令，则该表的 HWM 会被重新置为 0。</p>
+<p>HWM 数据库的操作有如下影响：</p>
+<ul>
+<li>全表扫描通常要读出直到 HWM 标记的所有的属于该表数据库块，即使该表中没有任何数据。</li>
+<li>即使 HWM 以下有空闲的数据库块，键入在插入数据时使用了 append 关键字，则在插入时使用 HWM 以上的数据块，此时 HWM 会自动增大。</li>
 </ul>
+<h2 id="实际问题处理"><a href="#实际问题处理" class="headerlink" title="实际问题处理"></a>实际问题处理</h2><p>首先，大数据量是该表的非常态，所以最快的解决办法就是重建这个表，释放数据块。</p>
+<p>其次，利用主键，查询中加入主键的条件则不扫描所有数据块，从而避免性能影响。而释放数据块的处理通过手动来完成（一年也处理不了一次吧）。</p>
+<p><em>实际上该表是应该有主键的，而现场该表没有主键</em></p>
+<h2 id="测试-SQL"><a href="#测试-SQL" class="headerlink" title="测试 SQL"></a>测试 SQL</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="comment">-- 创建带主键的表，TRIGGERED_TAB_CHANGES表是没有主键的表</span></div><div class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> TRIGGERED_TAB_CHANGES_KEY(</div><div class="line">  TRIGGER_ID     <span class="built_in">NUMBER</span>()                      <span class="keyword">NOT</span> <span class="literal">NULL</span>,</div><div class="line">  TRIGGER_STAMP  <span class="built_in">DATE</span>                           <span class="keyword">NOT</span> <span class="literal">NULL</span>,</div><div class="line">  TRIGGER_EVENT  <span class="built_in">CHAR</span>(<span class="number">1</span> <span class="keyword">BYTE</span>),</div><div class="line">  TRIGGER_OWNER  VARCHAR2(<span class="number">30</span> <span class="keyword">BYTE</span>),</div><div class="line">  TRIGGER_TABLE  VARCHAR2(<span class="number">30</span> <span class="keyword">BYTE</span>),</div><div class="line">  TRIGGER_SQL    VARCHAR2(<span class="number">4000</span> <span class="keyword">BYTE</span>),</div><div class="line">  PRIMARY <span class="keyword">KEY</span>(TRIGGER_ID));</div><div class="line"></div><div class="line"><span class="comment">-- 插入3000万条记录</span></div><div class="line"><span class="keyword">insert</span> <span class="keyword">into</span> TRIGGERED_TAB_CHANGES(TRIGGER_ID,TRIGGER_STAMP,TRIGGER_EVENT,TRIGGER_OWNER,TRIGGER_TABLE,TRIGGER_SQL) <span class="keyword">select</span> <span class="keyword">rownum</span>,<span class="keyword">sysdate</span>,<span class="string">'a'</span>,<span class="string">'owner_'</span>||<span class="keyword">rownum</span>,<span class="string">'table_'</span>||<span class="keyword">rownum</span>,<span class="string">'sql_'</span>||<span class="keyword">rownum</span> <span class="keyword">from</span> dual <span class="keyword">connect</span> <span class="keyword">by</span> <span class="keyword">rownum</span> &lt;=<span class="number">30000000</span>;</div><div class="line"></div><div class="line"><span class="keyword">insert</span> <span class="keyword">into</span> TRIGGERED_TAB_CHANGES_KEY(TRIGGER_ID,TRIGGER_STAMP,TRIGGER_EVENT,TRIGGER_OWNER,TRIGGER_TABLE,TRIGGER_SQL) <span class="keyword">select</span> <span class="keyword">rownum</span>,<span class="keyword">sysdate</span>,<span class="string">'a'</span>,<span class="string">'owner_'</span>||<span class="keyword">rownum</span>,<span class="string">'table_'</span>||<span class="keyword">rownum</span>,<span class="string">'sql_'</span>||<span class="keyword">rownum</span> <span class="keyword">from</span> dual <span class="keyword">connect</span> <span class="keyword">by</span> <span class="keyword">rownum</span> &lt;=<span class="number">30000000</span>;</div><div class="line"></div><div class="line"><span class="keyword">delete</span>  <span class="keyword">from</span> triggered_tab_changes;</div><div class="line"></div><div class="line"><span class="keyword">select</span> <span class="keyword">count</span>(*) <span class="keyword">from</span> triggered_tab_changes;</div><div class="line"></div><div class="line"><span class="keyword">delete</span>  <span class="keyword">from</span> triggered_tab_changes_key;</div><div class="line"></div><div class="line"><span class="keyword">select</span> <span class="keyword">count</span>(*) <span class="keyword">from</span> triggered_tab_changes_key <span class="keyword">where</span> trigger_key &gt; <span class="number">0</span>;</div><div class="line"></div><div class="line"><span class="keyword">SELECT</span> TRIGGER_STAMP, TRIGGER_EVENT, TRIGGER_OWNER, TRIGGER_TABLE, TRIGGER_SQL <span class="keyword">FROM</span> TRIGGERED_TAB_CHANGES <span class="keyword">ORDER</span> <span class="keyword">BY</span> TRIGGER_STAMP <span class="keyword">ASC</span>;</div><div class="line"></div><div class="line"><span class="keyword">SELECT</span> TRIGGER_STAMP, TRIGGER_EVENT, TRIGGER_OWNER, TRIGGER_TABLE, TRIGGER_SQL <span class="keyword">FROM</span> TRIGGERED_TAB_CHANGES_KEY <span class="keyword">where</span> trigger_id &gt; <span class="number">0</span> <span class="keyword">ORDER</span> <span class="keyword">BY</span> TRIGGER_STAMP <span class="keyword">ASC</span>;</div><div class="line"></div><div class="line"><span class="keyword">SELECT</span> TRIGGER_ID, TRIGGER_STAMP, TRIGGER_EVENT, TRIGGER_OWNER, TRIGGER_TABLE, TRIGGER_SQL <span class="keyword">FROM</span> TRIGGERED_TAB_CHANGES <span class="keyword">ORDER</span> <span class="keyword">BY</span> TRIGGER_STAMP,TRIGGER_ID;</div><div class="line"></div><div class="line"><span class="keyword">SELECT</span> TRIGGER_ID, TRIGGER_STAMP, TRIGGER_EVENT, TRIGGER_OWNER, TRIGGER_TABLE, TRIGGER_SQL <span class="keyword">FROM</span> TRIGGERED_TAB_CHANGES_KEY <span class="keyword">where</span> trigger_id &gt; <span class="number">0</span> <span class="keyword">ORDER</span> <span class="keyword">BY</span> TRIGGER_STAMP,TRIGGER_ID;</div><div class="line"></div><div class="line"><span class="keyword">SELECT</span> <span class="keyword">rownum</span>,T.* <span class="keyword">from</span> (<span class="keyword">SELECT</span> TRIGGER_ID, TRIGGER_STAMP, TRIGGER_EVENT, TRIGGER_OWNER, TRIGGER_TABLE, TRIGGER_SQL <span class="keyword">FROM</span> TRIGGERED_TAB_CHANGES <span class="keyword">ORDER</span> <span class="keyword">BY</span> TRIGGER_STAMP,TRIGGER_ID) T <span class="keyword">WHERE</span> <span class="keyword">rownum</span> &lt;= <span class="number">10000</span>;</div><div class="line"></div><div class="line"><span class="keyword">SELECT</span> <span class="keyword">rownum</span>,T.* <span class="keyword">from</span> (<span class="keyword">SELECT</span> TRIGGER_ID, TRIGGER_STAMP, TRIGGER_EVENT, TRIGGER_OWNER, TRIGGER_TABLE, TRIGGER_SQL <span class="keyword">FROM</span> TRIGGERED_TAB_CHANGES_KEY <span class="keyword">where</span> trigger_id &gt; <span class="number">0</span> <span class="keyword">ORDER</span> <span class="keyword">BY</span> TRIGGER_STAMP,TRIGGER_ID) T <span class="keyword">WHERE</span> <span class="keyword">rownum</span> &lt;= <span class="number">10000</span>;</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -362,11 +353,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/ai/" rel="tag"># ai</a>
+            <a href="/tags/database/" rel="tag"># database</a>
           
-            <a href="/tags/jupyter/" rel="tag"># jupyter</a>
+            <a href="/tags/sql/" rel="tag"># sql</a>
           
-            <a href="/tags/python/" rel="tag"># python</a>
+            <a href="/tags/oracle/" rel="tag"># oracle</a>
           
         </div>
       
@@ -379,8 +370,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/09/20/Flyway 笔记/" rel="next" title="Flyway 笔记">
-                <i class="fa fa-chevron-left"></i> Flyway 笔记
+              <a href="/2017/11/28/shell 监视 CPU 及修改进程优先级/" rel="next" title="shell 监视系统 CPU 并提升某些进程优先级">
+                <i class="fa fa-chevron-left"></i> shell 监视系统 CPU 并提升某些进程优先级
               </a>
             
           </div>
@@ -388,10 +379,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/09/30/Oracle 优化记录之分区表/" rel="prev" title="Oracle 优化记录之分区表.md">
-                Oracle 优化记录之分区表.md <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -542,7 +529,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Jupyter的各种快捷键"><span class="nav-number">1.</span> <span class="nav-text">Jupyter的各种快捷键</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题描述"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题分析"><span class="nav-number">2.</span> <span class="nav-text">问题分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实际问题处理"><span class="nav-number">3.</span> <span class="nav-text">实际问题处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试-SQL"><span class="nav-number">4.</span> <span class="nav-text">测试 SQL</span></a></li></ol></div>
             
 
           </div>
